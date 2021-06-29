@@ -1,0 +1,44 @@
+{
+    "variables": {
+    "vpc_region": "us-east-1",
+    "instance_type": "t2.micro",
+    "ssh_username": "ec2-user"
+  },
+    "builders": [{
+      "type": "amazon-ebs",
+      "region": "us-east-1",
+      "source_ami_filter": {
+        "filters": {
+         "virtualization-type": "hvm",
+         "name": "*amzn2-ami-hvm-2.0.20210318.0-x86_64-ebs*",
+         "root-device-type": "ebs"
+        },
+        "owners": [
+         "137112412989"
+        ],
+        "most_recent": true
+       },
+      "vpc_id": "vpc-04f6637f",
+      "subnet_id": "subnet-d4d3139e",
+      "associate_public_ip_address": true,
+      "security_group_id": "sg-00db40e26154f3a7c",
+      "instance_type": "{{user `instance_type`}}",
+      "ssh_username": "{{user `ssh_username`}}",
+      "ami_name": "ediestajr-ami-amazon-linux_v2-{{isotime | clean_resource_name}}"
+    }],
+
+    "provisioners": [
+        {
+            "type": "shell",
+            "inline": [
+              "sleep 60",
+              "sudo yum -y install httpd mod_ssl",
+              "systemctl enable httpd",
+              "sudo echo \"hello ED world\" > index.html",
+              "sudo chmod 0644 index.html",
+              "sudo cp index.html /var/www/html/"
+            ]
+        
+        }
+    ] 
+}
