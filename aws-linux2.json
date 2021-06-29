@@ -31,12 +31,12 @@
         {
             "type": "shell",
             "inline": [
-              "sleep 60",
-              "sudo yum -y install httpd mod_ssl",
-              "systemctl enable httpd",
+              "sleep 30",
+              "#sudo yum -y install httpd mod_ssl",
+              "#systemctl enable httpd",
               "sudo echo \"hello ED world\" > index.html",
               "sudo chmod 0644 index.html",
-              "sudo cp index.html /var/www/html/"
+              "#sudo cp index.html /var/www/html/"
             ]
         
         }
