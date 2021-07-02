@@ -18,7 +18,7 @@ phases:
     commands:
       - echo "Build Phase"
       - ls -l $CODEBUILD_SRC_DIR/packer/
-      - cd $CODEBUILD_SRC_DIR/packer && packer build amazon2.json
+      - cd $CODEBUILD_SRC_DIR/packer && packer build aws-linux2.json
 
   install:
     runtime-versions:
