@@ -17,8 +17,8 @@ phases:
   build:
     commands:
       - echo "Build Phase"
-      - ls -l $CODEBUILD_SRC_DIR
-      - cd packer && packer build amazon2.json
+      - ls -l $CODEBUILD_SRC_DIR/packer/
+      - cd $CODEBUILD_SRC_DIR/packer && packer build amazon2.json
 
   install:
     runtime-versions:
