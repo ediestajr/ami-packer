@@ -1,0 +1,31 @@
+---
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo "Installing additional YUM & Python packages..."
+      - yum -y update && yum -y install unzip curl python3-pip
+      - pip3 install awscli
+      - echo "Installing Packer..."
+      - cd /usr/local/bin/ && curl -qL -o packer.zip https://releases.hashicorp.com/packer/1.7.3/packer_1.7.3_linux_amd64.zip && unzip packer.zip
+      - cd $CODEBUILD_SRC_DIR && packer version
+      - echo "Validating packer JSON"
+      - cd packer && packer validate aws-linux2.json
+      - env
+      - echo $HOME
+  build:
+    commands:
+      - echo "Build Phase"
+      - cd $CODEBUILD_SRC_DIR/packer && packer build amazon2.json
+
+  install:
+    runtime-versions:
+      docker: 18
+    commands:
+      - echo "Install Phase"
+
+  post_build:
+    commands:
+      - echo "Packer build done"
+      - aws ec2 describe-images --owners self --filters 'Name=name,Values=matter*'
